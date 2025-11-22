@@ -42,6 +42,15 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":domain"))
 
+    // Retrofit + Moshi
+    implementation(libs.retrofit)
+    implementation(libs.converter.moshi)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.logging.interceptor)
+
+    // For coroutines (flow, emit) in MovieRepositoryImpl
+    implementation(libs.kotlinx.coroutines.core.v181)
+
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.junit)
