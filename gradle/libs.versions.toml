@@ -1,6 +1,5 @@
 [versions]
 agp = "8.13.1"
-converterMoshi = "3.0.0"
 coilCompose = "2.7.0"
 kotlin = "2.0.21"
 coreKtx = "1.10.1"
@@ -15,13 +14,14 @@ composeBom = "2024.09.00"
 appcompat = "1.6.1"
 loggingInterceptor = "5.3.2"
 material = "1.10.0"
-moshiKotlin = "1.15.2"
 retrofit = "3.0.0"
+converterMoshi = "3.0.0"
+moshiKotlin = "1.15.2"
+okhttpLogging = "4.12.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converterMoshi" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -39,10 +39,11 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-coroutines-core-v181 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCoreVersion" }
-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshiKotlin" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converterMoshi" }
+moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshiKotlin" }
+logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttpLogging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

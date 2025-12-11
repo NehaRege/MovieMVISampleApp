@@ -1,0 +1,81 @@
+package com.example.movieapp
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.data.remote.MovieApiService
+import com.example.data.remote.MoviesRemoteDataSource
+import com.example.data.repo.MovieRepositoryImpl
+import com.example.domain.repo.MovieRepository
+import com.example.domain.usecase.GetPopularMoviesUseCase
+import com.example.feature.movies.presentation.MovieListPresenter
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+
+/*
+Manual DI Graph.
+
+MovieListPresenter -> GetPopularMoviesUseCase -> MovieRepository -> MoviesRemoteDataSource -> MovieApiService, apiKey (String)
+MovieApiService -> Retrofit -> base url, OkHttpClient, Converter factory (Moshi)
+OkHttpClient → logging interceptor
+
+*/
+
+private const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
+private const val TMDB_API_KEY = "" // TODO: Add API KEY
+
+object MoviesGraph {
+
+    // --- Network ---
+    private val loggingInterceptor: HttpLoggingInterceptor by lazy {
+        HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+    }
+
+    private val okHttpClient: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+    }
+
+    private val retrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(TMDB_BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
+    }
+
+    private val moviesApi: MovieApiService by lazy {
+        retrofit.create(MovieApiService::class.java)
+    }
+
+    // --- Data layer ---
+    private val moviesRemoteDataSource: MoviesRemoteDataSource by lazy {
+        MoviesRemoteDataSource(moviesApi, TMDB_API_KEY)
+    }
+
+    private val movieRepository: MovieRepository by lazy {
+        MovieRepositoryImpl(moviesRemoteDataSource)
+    }
+
+    // --- Domain ---
+    private val getPopularMoviesUseCase: GetPopularMoviesUseCase by lazy {
+        GetPopularMoviesUseCase(movieRepository)
+    }
+
+    // --- Presenter factory ---
+    val movieListPresenterFactory: ViewModelProvider.Factory by lazy {
+        object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(MovieListPresenter::class.java)) {
+                    return MovieListPresenter(getPopularMoviesUseCase) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class $modelClass")
+            }
+        }
+    }
+}
