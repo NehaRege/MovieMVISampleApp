@@ -8,6 +8,8 @@ import com.example.data.repo.MovieRepositoryImpl
 import com.example.domain.repo.MovieRepository
 import com.example.domain.usecase.GetPopularMoviesUseCase
 import com.example.feature.movies.presentation.MovieListPresenter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -23,7 +25,7 @@ OkHttpClient → logging interceptor
 */
 
 private const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
-private const val TMDB_API_KEY = "" // TODO: Add API KEY
+private const val TMDB_API_KEY = "5dd4007fa2af4955e5396b100cb11310"
 
 object MoviesGraph {
 
@@ -40,11 +42,16 @@ object MoviesGraph {
             .build()
     }
 
+    private val moshi: Moshi by lazy {
+        Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(TMDB_BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
 

@@ -48,6 +48,7 @@ dependencies {
 
     // Retrofit + Moshi
     implementation(libs.retrofit)
+    implementation(libs.kotlin.reflect) // Moshi needs kotlin-reflect to correctly deserialize Kotlin data classes at runtime
     implementation(libs.converter.moshi)
     implementation(libs.moshi.kotlin)
     implementation(libs.logging.interceptor)

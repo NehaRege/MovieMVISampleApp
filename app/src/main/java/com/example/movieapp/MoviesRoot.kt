@@ -2,9 +2,11 @@ package com.example.movieapp
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.feature.movies.presentation.MovieListEvent.ScreenOpened
 import com.example.feature.movies.presentation.MovieListPresenter
 import com.example.feature.movies.ui.MovieListScreen
 
@@ -18,8 +20,10 @@ fun MoviesRoot() {
     // 2) Collect state from presenter
     val state = presenter.state.collectAsStateWithLifecycle()
 
-    // 3) Use one snackbar host (for now just simple callback)
-    val snackbarHostState = remember { SnackbarHostState() }
+    // 3) Trigger initial load exactly once
+    LaunchedEffect(Unit) {
+        presenter.onEvent(ScreenOpened)
+    }
 
     MovieListScreen(
         state = state.value,
@@ -30,7 +34,6 @@ fun MoviesRoot() {
             println("Navigate to detail for movieId: $movieId")
         },
         onShowError = { errorMessage ->
-//            snackbarHostState.showSnackbar(errorMessage)
             println("Error: $errorMessage")
         }
     )
