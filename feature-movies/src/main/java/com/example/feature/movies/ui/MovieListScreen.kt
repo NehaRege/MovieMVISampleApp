@@ -17,8 +17,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -38,6 +41,7 @@ import com.example.feature.movies.presentation.MovieListState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieListScreen(
     state: MovieListState,
@@ -60,30 +64,45 @@ fun MovieListScreen(
         }
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        when {
-            state.isLoading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Movies",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+            )
+        }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            when {
+                state.isLoading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
 
-            state.errorMessage != null -> {
-                ErrorView(
-                    errorMessage = state.errorMessage
-                        ?: "Oops! An error occurred. Please refresh or try again later.",
-                    onRetry = { onEvent(MovieListEvent.RefreshClicked) },
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
+                state.errorMessage != null -> {
+                    ErrorView(
+                        errorMessage = state.errorMessage
+                            ?: "Oops! An error occurred. Please refresh or try again later.",
+                        onRetry = { onEvent(MovieListEvent.RefreshClicked) },
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
 
-            else -> {
-                MovieList(
-                    movieList = state.movies,
-                    onMovieClicked = { movieId ->
-                        onEvent(MovieClicked(movieId = movieId))
-                    }
-                )
+                else -> {
+                    MovieList(
+                        movieList = state.movies,
+                        onMovieClicked = { movieId ->
+                            onEvent(MovieClicked(movieId = movieId))
+                        }
+                    )
+                }
             }
         }
     }
@@ -123,7 +142,7 @@ fun MovieItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(5.dp)
+                .padding(12.dp)
         ) {
             // Add coil dependency for AsyncImage in gradle & libs.version
             AsyncImage(
@@ -138,7 +157,9 @@ fun MovieItem(
             Spacer(modifier = Modifier.width(6.dp))
 
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp)
             ) {
                 Text(
                     text = movie.title,
