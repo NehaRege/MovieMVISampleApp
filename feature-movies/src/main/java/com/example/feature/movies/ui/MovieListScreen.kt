@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -132,7 +133,7 @@ fun MovieItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                vertical = 8.dp,
+                vertical = 10.dp,
                 horizontal = 16.dp
             )
             .clickable {
@@ -142,24 +143,23 @@ fun MovieItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp)
+                .padding(16.dp)
         ) {
             // Add coil dependency for AsyncImage in gradle & libs.version
             AsyncImage(
                 model = movie.posterUrl,
                 contentDescription = "Poster for ${movie.title}",
                 modifier = Modifier
-                    .size(60.dp)
-                    .clip(RoundedCornerShape(8.dp)),
+                    .size(width = 72.dp, height = 100.dp)
+                    .clip(RoundedCornerShape(12.dp)),
                 contentScale = ContentScale.Crop
             )
 
-            Spacer(modifier = Modifier.width(6.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(start = 8.dp)
             ) {
                 Text(
                     text = movie.title,
@@ -167,11 +167,21 @@ fun MovieItem(
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
                     text = movie.overview,
                     style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    text = "Release: ${movie.releaseDate.take(4)}",
+                    style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
