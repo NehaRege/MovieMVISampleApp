@@ -17,6 +17,28 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        // API_KEY
+        val tmdbApiKey = providers.gradleProperty("TMDB_API_KEY")
+            .orElse("")
+            .get()
+
+        buildConfigField(
+            "String",
+            "TMDB_API_KEY",
+            "\"$tmdbApiKey\""
+        )
+
+        // BASE URL
+        val tmdbBaseUrl = providers.gradleProperty("TMDB_BASE_URL")
+            .orElse("https://api.themoviedb.org/3/")
+            .get()
+
+        buildConfigField(
+            "String",
+            "TMDB_BASE_URL",
+            "\"$tmdbBaseUrl\""
+        )
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -38,6 +60,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

@@ -24,10 +24,18 @@ OkHttpClient → logging interceptor
 
 */
 
-private const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
-private const val TMDB_API_KEY = "5dd4007fa2af4955e5396b100cb11310"
-
 object MoviesGraph {
+    private val baseUrl = BuildConfig.TMDB_BASE_URL
+    private val apiKey: String = BuildConfig.TMDB_API_KEY
+
+    init {
+        require(apiKey.isNotBlank()) {
+            "TMDB_API_KEY is missing. Add it to local.properties as TMDB_API_KEY=..."
+        }
+        require(baseUrl.isNotBlank()) {
+            "TMDB_BASE_URL is missing. Add it to local.properties as TMDB_BASE_URL=..."
+        }
+    }
 
     // --- Network ---
     private val loggingInterceptor: HttpLoggingInterceptor by lazy {
@@ -49,7 +57,7 @@ object MoviesGraph {
     }
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(TMDB_BASE_URL)
+            .baseUrl(baseUrl)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
@@ -61,7 +69,10 @@ object MoviesGraph {
 
     // --- Data layer ---
     private val moviesRemoteDataSource: MoviesRemoteDataSource by lazy {
-        MoviesRemoteDataSource(moviesApi, TMDB_API_KEY)
+        MoviesRemoteDataSource(
+            apiService = moviesApi,
+            apiKey = apiKey
+        )
     }
 
     private val movieRepository: MovieRepository by lazy {
