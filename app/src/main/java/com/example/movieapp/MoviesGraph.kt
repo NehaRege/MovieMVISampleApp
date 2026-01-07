@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.data.remote.MovieApiService
 import com.example.data.remote.MoviesRemoteDataSource
+import com.example.data.remote.TmdbAuthInterceptor
 import com.example.data.repo.MovieRepositoryImpl
 import com.example.domain.repo.MovieRepository
 import com.example.domain.usecase.GetPopularMoviesUseCase
@@ -46,6 +47,7 @@ object MoviesGraph {
 
     private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
+            .addInterceptor(TmdbAuthInterceptor(apiKey))
             .addInterceptor(loggingInterceptor)
             .build()
     }
@@ -71,7 +73,6 @@ object MoviesGraph {
     private val moviesRemoteDataSource: MoviesRemoteDataSource by lazy {
         MoviesRemoteDataSource(
             apiService = moviesApi,
-            apiKey = apiKey
         )
     }
 
