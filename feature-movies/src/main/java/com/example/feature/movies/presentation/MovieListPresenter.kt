@@ -2,6 +2,8 @@ package com.example.feature.movies.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.error.toAppError
+import com.example.core.error.toErrorMessage
 import com.example.domain.usecase.GetPopularMoviesUseCase
 import com.example.feature.movies.presentation.MovieListCoordinator.NavigateToMovieDetail
 import com.example.feature.movies.presentation.MovieListCoordinator.ShowError
@@ -53,13 +55,15 @@ class MovieListPresenter(
                 }
                 .catch { throwable ->
                     // Catches exceptions thrown upstream in the flow
-                    val errorMessage =
-                        throwable.message ?: "Oops something went wrong. Please try again."
                     _state.update {
-                        it.copy(isLoading = false, errorMessage = errorMessage)
+                        it.copy(isLoading = false, errorMessage = throwable.toAppError())
                     }
 
-                    _coordinator.emit(ShowError(message = errorMessage))
+                    _coordinator.emit(
+                        ShowError(
+                            message = throwable.toAppError().toErrorMessage()
+                        )
+                    )
                 }
                 .collect { movies ->
                     // Called for each emission.

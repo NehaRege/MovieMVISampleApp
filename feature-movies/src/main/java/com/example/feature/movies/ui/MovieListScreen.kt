@@ -30,6 +30,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.core.error.AppError.ServerError
+import com.example.core.error.toErrorMessage
 import com.example.domain.model.Movie
 import com.example.feature.movies.presentation.MovieListCoordinator
 import com.example.feature.movies.presentation.MovieListCoordinator.NavigateToMovieDetail
@@ -75,8 +77,7 @@ fun MovieListScreen(
 
             state.errorMessage != null -> {
                 ErrorView(
-                    errorMessage = state.errorMessage
-                        ?: "Oops! An error occurred. Please refresh or try again later.",
+                    errorMessage = state.errorMessage.toErrorMessage(),
                     onRetry = { onEvent(MovieListEvent.RefreshClicked) },
                     modifier = Modifier.align(Alignment.Center)
                 )
@@ -238,7 +239,7 @@ fun MovieListScreenPreview() {
 fun ErrorPreview() {
     MovieListScreen(
         state = MovieListState(
-            errorMessage = "Something went wrong"
+            errorMessage = ServerError
         ),
         onEvent = {},
         coordinator = MutableSharedFlow(),
