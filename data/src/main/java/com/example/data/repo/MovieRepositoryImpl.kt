@@ -1,5 +1,6 @@
 package com.example.data.repo
 
+import com.example.data.mapper.toMovie
 import com.example.data.mapper.toMovieList
 import com.example.data.remote.MoviesRemoteDataSource
 import com.example.domain.model.Movie
@@ -19,5 +20,11 @@ class MovieRepositoryImpl(
         val moviesDto = moviesRemoteDataSource.getPopularMovies(page)
         val movies = moviesDto.toMovieList()
         emit(movies)
+    }
+
+    override suspend fun getMovieDetails(movieId: Int): Flow<Movie> = flow {
+        val movieDetailDto = moviesRemoteDataSource.getMovieDetails(movieId)
+        val movieDetail = movieDetailDto.toMovie()
+        emit(movieDetail)
     }
 }
