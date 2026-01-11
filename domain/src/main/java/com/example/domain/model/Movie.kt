@@ -6,6 +6,11 @@ data class Movie(
     val overview: String,
     val releaseDate: String,
     val posterUrl: String,
+    // detail fields
+    val backdropUrl: String? = null,
+    val genres: List<String> = emptyList(),
+    val rating: Double? = null,
+    val tagline: String? = null,
 )
 /*
 TODO:
