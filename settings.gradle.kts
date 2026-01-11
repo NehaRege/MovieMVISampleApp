@@ -25,4 +25,7 @@ include(":core")
 include(":domain")
 include(":data")
 include(":feature-movies")
-include(":feature-movie-detail")
+
+include(":features:movies:detail:presentation")
+include(":features:movies:detail:ui")
+include(":features:movies:detail:navigation")
