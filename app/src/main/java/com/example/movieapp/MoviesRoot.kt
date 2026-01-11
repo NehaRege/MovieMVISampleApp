@@ -22,9 +22,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.feature.movies.presentation.MovieListEvent.ScreenOpened
-import com.example.feature.movies.presentation.MovieListPresenter
-import com.example.feature.movies.ui.MovieListScreen
+import com.example.feature_movies_presentation.MovieListEvent.ScreenOpened
+import com.example.feature_movies_presentation.MovieListPresenter
+import com.example.feature_movies_ui.MovieListScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

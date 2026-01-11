@@ -29,3 +29,7 @@ include(":feature-movies")
 include(":feature-detail-ui")
 include(":feature-detail-presentation")
 include(":feature-detail-navigation")
+
+include(":feature-movies-ui")
+include(":feature-movies-presentation")
+include(":feature-movies-navigation")

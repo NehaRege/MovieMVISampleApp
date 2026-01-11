@@ -65,7 +65,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":feature-movies"))
+    implementation(project(":feature-movies-ui"))
+    implementation(project(":feature-movies-presentation"))
+    implementation(project(":feature-movies-navigation"))
+
     implementation(project(":data"))
     implementation(project(":domain"))
 

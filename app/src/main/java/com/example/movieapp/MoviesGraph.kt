@@ -8,7 +8,7 @@ import com.example.data.remote.TmdbAuthInterceptor
 import com.example.data.repo.MovieRepositoryImpl
 import com.example.domain.repo.MovieRepository
 import com.example.domain.usecase.GetPopularMoviesUseCase
-import com.example.feature.movies.presentation.MovieListPresenter
+import com.example.feature_movies_presentation.MovieListPresenter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
