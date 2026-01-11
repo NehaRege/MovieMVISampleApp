@@ -1,14 +1,14 @@
-package com.example.feature.movie.detail.presentation
+package com.example.feature_detail_presentation
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.error.toAppError
 import com.example.core.error.toErrorMessage
 import com.example.domain.usecase.GetMovieDetailsUseCase
-import com.example.feature.movie.detail.presentation.MovieDetailCoordinator.NavigateBack
-import com.example.feature.movie.detail.presentation.MovieDetailEvent.BackClicked
-import com.example.feature.movie.detail.presentation.MovieDetailEvent.RetryClicked
-import com.example.feature.movie.detail.presentation.MovieDetailEvent.ScreenOpened
+import com.example.feature_detail_presentation.MovieDetailCoordinator.NavigateBack
+import com.example.feature_detail_presentation.MovieDetailEvent.BackClicked
+import com.example.feature_detail_presentation.MovieDetailEvent.RetryClicked
+import com.example.feature_detail_presentation.MovieDetailEvent.ScreenOpened
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

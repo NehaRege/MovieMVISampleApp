@@ -14,13 +14,13 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/feature-detail-navigation" />
+            <option value="$PROJECT_DIR$/feature-detail-presentation" />
+            <option value="$PROJECT_DIR$/feature-detail-ui" />
+            <option value="$PROJECT_DIR$/feature-list-navigation" />
+            <option value="$PROJECT_DIR$/feature-list-presentation" />
+            <option value="$PROJECT_DIR$/feature-list-ui" />
             <option value="$PROJECT_DIR$/feature-movies" />
-            <option value="$PROJECT_DIR$/features" />
-            <option value="$PROJECT_DIR$/features/movies" />
-            <option value="$PROJECT_DIR$/features/movies/detail" />
-            <option value="$PROJECT_DIR$/features/movies/detail/navigation" />
-            <option value="$PROJECT_DIR$/features/movies/detail/presentation" />
-            <option value="$PROJECT_DIR$/features/movies/detail/ui" />
           </set>
         </option>
       </GradleProjectSettings>

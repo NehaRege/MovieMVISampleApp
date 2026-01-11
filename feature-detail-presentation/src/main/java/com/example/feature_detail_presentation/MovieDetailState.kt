@@ -1,4 +1,4 @@
-package com.example.feature.movie.detail.presentation
+package com.example.feature_detail_presentation
 
 import com.example.core.error.AppError
 import com.example.domain.model.Movie

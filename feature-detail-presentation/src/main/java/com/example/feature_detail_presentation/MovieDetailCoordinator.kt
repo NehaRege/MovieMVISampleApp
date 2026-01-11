@@ -1,4 +1,4 @@
-package com.example.feature.movie.detail.presentation
+package com.example.feature_detail_presentation
 
 sealed class MovieDetailCoordinator {
     data object NavigateBack: MovieDetailCoordinator()
