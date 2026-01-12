@@ -24,7 +24,6 @@ include(":app")
 include(":core")
 include(":domain")
 include(":data")
-include(":feature-movies")
 
 include(":feature-detail-ui")
 include(":feature-detail-presentation")
