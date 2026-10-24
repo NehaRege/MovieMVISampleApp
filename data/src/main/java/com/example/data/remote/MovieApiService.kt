@@ -6,6 +6,9 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+/*
+defines retrofit functions to fetch data
+ */
 interface MovieApiService {
     @GET("movie/popular")
     suspend fun getPopularMovies(

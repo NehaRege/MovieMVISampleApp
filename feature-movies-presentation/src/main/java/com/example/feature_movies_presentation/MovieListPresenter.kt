@@ -24,13 +24,18 @@ class MovieListPresenter(
 ) : ViewModel() {
     private val _state =
         MutableStateFlow(MovieListState()) // <-- Mutable & Private. Presenter updates
-    val state: StateFlow<MovieListState> = _state // <-- Read Only & Public. UI observes
-
+    val state: StateFlow<MovieListState> = _state // <-- Read Only & Public. UI observes. The UI can only read the state, but the presenter can write to it
+    // val state = _state.asStateFlow()
     private val _coordinator =
         MutableSharedFlow<MovieListCoordinator>() // <-- Mutable and Private. Presenter updates
     val coordinator: SharedFlow<MovieListCoordinator> =
         _coordinator // <-- Read Only & Public. UI observes
 
+    /*
+    Why not make onEvent() suspend?
+        - onEvent represents a synchronous UI event dispatcher.
+        - It should not be suspend bc the UI should be able to fire events without caring about coroutine management.
+     */
     fun onEvent(event: MovieListEvent) {
         when (event) {
             is MovieClicked -> {
