@@ -7,7 +7,9 @@ import com.example.data.remote.MoviesRemoteDataSource
 import com.example.data.remote.TmdbAuthInterceptor
 import com.example.data.repo.MovieRepositoryImpl
 import com.example.domain.repo.MovieRepository
+import com.example.domain.usecase.GetMovieDetailsUseCase
 import com.example.domain.usecase.GetPopularMoviesUseCase
+import com.example.feature_detail_presentation.MovieDetailPresenter
 import com.example.feature_movies_presentation.MovieListPresenter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -85,6 +87,10 @@ object MoviesGraph {
         GetPopularMoviesUseCase(movieRepository)
     }
 
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase by lazy {
+        GetMovieDetailsUseCase(movieRepository)
+    }
+
     // --- Presenter factory ---
     val movieListPresenterFactory: ViewModelProvider.Factory by lazy {
         object : ViewModelProvider.Factory {
@@ -94,6 +100,21 @@ object MoviesGraph {
                     return MovieListPresenter(getPopularMoviesUseCase) as T
                 }
                 throw IllegalArgumentException("Unknown ViewModel class $modelClass")
+            }
+        }
+    }
+
+
+    val movieDetailPresenterFactory: ViewModelProvider.Factory by lazy {
+        object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(MovieDetailPresenter::class.java)) {
+                    return MovieDetailPresenter(
+                        getMovieDetailsUseCase = getMovieDetailsUseCase
+                    ) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }
         }
     }

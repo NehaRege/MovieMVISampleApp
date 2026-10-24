@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    // Required in every module that contains @Composable code (Kotlin 2.0+).
+    // Without it, compilation fails with "BackendException: Exception during IR lowering".
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -38,6 +41,13 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+
+    implementation(project(":feature-detail-ui"))
+    implementation(project(":feature-detail-presentation"))
+
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

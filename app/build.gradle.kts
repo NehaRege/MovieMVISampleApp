@@ -69,8 +69,13 @@ dependencies {
     implementation(project(":feature-movies-presentation"))
     implementation(project(":feature-movies-navigation"))
 
+    implementation(project(":feature-detail-ui"))
+    implementation(project(":feature-detail-presentation"))
+    implementation(project(":feature-detail-navigation"))
+
     implementation(project(":data"))
     implementation(project(":domain"))
+    implementation(project(":core"))
 
     // Retrofit + Moshi
     implementation(libs.retrofit)
@@ -81,6 +86,9 @@ dependencies {
 
     // For viewModel in MoviesRoot
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // Navigation Compose
+    implementation(libs.androidx.navigation.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
