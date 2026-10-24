@@ -49,7 +49,7 @@ dependencies {
     implementation(libs.logging.interceptor)
 
     // For coroutines (flow, emit) in MovieRepositoryImpl
-    implementation(libs.kotlinx.coroutines.core.v181)
+    implementation(libs.kotlinx.coroutines.core)
 
     testImplementation(libs.junit)
 
