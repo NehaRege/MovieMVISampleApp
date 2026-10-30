@@ -15,14 +15,14 @@ Communicates with Remote, Local, Cache Data Source and returns --> Flow<List<Mov
 class MovieRepositoryImpl(
     val moviesRemoteDataSource: MoviesRemoteDataSource,
 ) : MovieRepository {
-    override suspend fun getPopularMovies(page: Int): Flow<List<Movie>> = flow {
+    override fun getPopularMovies(page: Int): Flow<List<Movie>> = flow {
         // TODO: add loading/error handling if you wrap with Result later
         val moviesDto = moviesRemoteDataSource.getPopularMovies(page)
         val movies = moviesDto.toMovieList()
         emit(movies)
     }
 
-    override suspend fun getMovieDetails(movieId: Int): Flow<Movie> = flow {
+    override fun getMovieDetails(movieId: Int): Flow<Movie> = flow {
         val movieDetailDto = moviesRemoteDataSource.getMovieDetails(movieId)
         val movieDetail = movieDetailDto.toMovie()
         emit(movieDetail)
