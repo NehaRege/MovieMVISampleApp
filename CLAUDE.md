@@ -37,6 +37,7 @@ Any module containing `@Composable` code must apply the `kotlin.compose` plugin,
 
 - Run `./gradlew assembleDebug` after changes, before saying a task is done.
 - Git: stage files by name (never `git add .` or `-A`), one logical change per commit, never push or rewrite history unless asked.
+- Before every commit, show me the exact commit message (and the files it will include) and wait for my approval. This applies to each commit separately, including when splitting changes into several commits.
 - Never commit secrets (API keys, tokens).
 - Don't add new libraries or frameworks without asking.
 - Many files contain the author's study-note comments, plus markdown notes such as `domain/.../usecase/doc_usecase.md`. Never change, condense or remove them without my approval. If a note is unclear, outdated or could be worded better, suggest the improvement and wait for my OK.
@@ -52,3 +53,5 @@ Follow these for consistency. If you see an approach that would be better — on
 - Kotlin only; dependency versions only in `gradle/libs.versions.toml`.
 - Naming: `XPresenter`, `XState`, `XEvent`, `XCoordinator`, `XRoute`, `XScreen`.
 - Commit messages: Conventional Commits with a scope, e.g. `feat(navigation): ...`, `build(deps): ...`, `chore(gitignore): ...`, `docs(notes): ...`.
+  - Subject line: max 72 characters including the `type(scope): ` prefix, aim for ~50; imperative mood, lowercase after the prefix, no trailing period.
+  - Body (optional): blank line after the subject, wrapped at 72 characters, explaining *why* rather than *what*.
