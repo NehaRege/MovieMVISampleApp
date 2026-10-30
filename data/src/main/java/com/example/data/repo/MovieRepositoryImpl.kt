@@ -13,7 +13,7 @@ Implements Repo from Domain
 Communicates with Remote, Local, Cache Data Source and returns --> Flow<List<Movie>>
  */
 class MovieRepositoryImpl(
-    val moviesRemoteDataSource: MoviesRemoteDataSource,
+    private val moviesRemoteDataSource: MoviesRemoteDataSource,
 ) : MovieRepository {
     override fun getPopularMovies(page: Int): Flow<List<Movie>> = flow {
         // TODO: add loading/error handling if you wrap with Result later

@@ -16,7 +16,7 @@ Why UseCase? Clean separation between “What the app does” and “How it does
  - Repository → handles where it actually comes from (remote, local, cache).
  */
 class GetPopularMoviesUseCase(
-    val repository: MovieRepository
+    private val repository: MovieRepository
 ) {
     operator fun invoke(page: Int) = repository.getPopularMovies(page)
     /*
