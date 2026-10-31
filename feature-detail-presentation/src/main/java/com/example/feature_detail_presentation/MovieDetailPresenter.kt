@@ -2,10 +2,10 @@ package com.example.feature_detail_presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.core.error.toAppError
-import com.example.core.error.toErrorMessage
+import com.example.domain.model.Outcome
 import com.example.domain.usecase.GetMovieDetailsUseCase
 import com.example.feature_detail_presentation.MovieDetailCoordinator.NavigateBack
+import com.example.feature_detail_presentation.MovieDetailCoordinator.ShowError
 import com.example.feature_detail_presentation.MovieDetailEvent.BackClicked
 import com.example.feature_detail_presentation.MovieDetailEvent.RetryClicked
 import com.example.feature_detail_presentation.MovieDetailEvent.ScreenOpened
@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -57,30 +56,28 @@ class MovieDetailPresenter(
             getMovieDetailsUseCase(movieId)
                 .onStart {
                     _state.update {
-                        it.copy(isLoading = true, errorMessage = null)
+                        it.copy(isLoading = true, error = null)
                     }
                 }
-                .catch { throwable ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            errorMessage = throwable.toAppError()
-                        )
-                    }
+                .collect { outcome ->
+                    when (outcome) {
+                        is Outcome.Success -> _state.update {
+                            it.copy(
+                                isLoading = false,
+                                error = null,
+                                movieDetail = outcome.value
+                            )
+                        }
 
-                    _coordinator.emit(
-                        MovieDetailCoordinator.ShowError(
-                            message = throwable.toAppError().toErrorMessage()
-                        )
-                    )
-                }
-                .collect { movieDetail ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            errorMessage = null,
-                            movieDetail = movieDetail
-                        )
+                        is Outcome.Failure -> {
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    error = outcome.error
+                                )
+                            }
+                            _coordinator.emit(ShowError(error = outcome.error))
+                        }
                     }
                 }
         }

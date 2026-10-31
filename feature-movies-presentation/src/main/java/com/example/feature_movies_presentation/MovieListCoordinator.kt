@@ -1,5 +1,7 @@
 package com.example.feature_movies_presentation
 
+import com.example.domain.model.DomainError
+
 /*
 Effect or Coordinator
 
@@ -11,5 +13,5 @@ They differ from State because state is continuous (you can reconstruct the UI f
  */
 sealed class MovieListCoordinator {
     data class NavigateToMovieDetail(val movieId: Int): MovieListCoordinator()
-    data class ShowError(val message: String): MovieListCoordinator()
+    data class ShowError(val error: DomainError): MovieListCoordinator()
 }

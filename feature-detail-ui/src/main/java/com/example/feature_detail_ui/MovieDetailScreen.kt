@@ -16,12 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.core.error.toErrorMessage
+import com.example.core.error.toMessageRes
 import com.example.domain.model.Movie
 import com.example.feature_detail_presentation.MovieDetailCoordinator
 import com.example.feature_detail_presentation.MovieDetailCoordinator.NavigateBack
@@ -41,12 +42,13 @@ fun MovieDetailScreen(
     onNavigateBack: () -> Unit,
     onShowError: (String) -> Unit
 ) {
+    val context = LocalContext.current
     LaunchedEffect(coordinator) {
         coordinator.collect { coordinator ->
             when (coordinator) {
                 NavigateBack -> onNavigateBack()
 
-                is ShowError -> onShowError(coordinator.message)
+                is ShowError -> onShowError(context.getString(coordinator.error.toMessageRes()))
             }
         }
     }
@@ -56,16 +58,15 @@ fun MovieDetailScreen(
             .fillMaxSize()
     ) {
         val movie = state.movieDetail
-        val errorMessage = state.errorMessage
+        val error = state.error
         when {
             state.isLoading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
 
-            errorMessage != null -> {
-                // TODO: Show ErrorView
+            error != null -> {
                 ErrorView(
-                    errorMessage = errorMessage.toErrorMessage(),
+                    errorMessage = stringResource(error.toMessageRes()),
                     onRetry = { onEvent(MovieDetailEvent.RetryClicked) },
                     modifier = Modifier.align(Alignment.Center)
                 )

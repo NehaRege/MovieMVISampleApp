@@ -26,12 +26,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.core.error.AppError.ServerError
-import com.example.core.error.toErrorMessage
+import com.example.core.error.toMessageRes
+import com.example.domain.model.DomainError
 import com.example.domain.model.Movie
 import com.example.feature_movies_presentation.MovieListCoordinator
 import com.example.feature_movies_presentation.MovieListCoordinator.NavigateToMovieDetail
@@ -52,6 +54,8 @@ fun MovieListScreen(
     onNavigateToDetail: (Int) -> Unit,
     onShowError: (String) -> Unit
 ) {
+    val context = LocalContext.current
+
     LaunchedEffect(coordinator) {
         coordinator.collect { coordinator ->
             when (coordinator) {
@@ -60,7 +64,7 @@ fun MovieListScreen(
                 }
 
                 is ShowError -> {
-                    onShowError(coordinator.message)
+                    onShowError(context.getString(coordinator.error.toMessageRes()))
                 }
             }
         }
@@ -70,17 +74,18 @@ fun MovieListScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
+        val error = state.error
         when {
             state.isLoading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
 
-            state.errorMessage != null -> {
-//                ErrorView(
-//                    errorMessage = state.errorMessage.toErrorMessage(),
-//                    onRetry = { onEvent(MovieListEvent.RefreshClicked) },
-//                    modifier = Modifier.align(Alignment.Center)
-//                )
+            error != null -> {
+                ErrorView(
+                    errorMessage = stringResource(error.toMessageRes()),
+                    onRetry = { onEvent(MovieListEvent.RefreshClicked) },
+                    modifier = Modifier.align(Alignment.Center)
+                )
             }
 
             else -> {
@@ -225,7 +230,7 @@ fun MovieListScreenPreview() {
         state = MovieListState(
             isLoading = false,
             movies = dummyMoviesList(),
-            errorMessage = null
+            error = null
         ),
         onEvent = {},
         coordinator = MutableSharedFlow(),
@@ -239,7 +244,7 @@ fun MovieListScreenPreview() {
 fun ErrorPreview() {
     MovieListScreen(
         state = MovieListState(
-            errorMessage = ServerError
+            error = DomainError.Server
         ),
         onEvent = {},
         coordinator = MutableSharedFlow(),
